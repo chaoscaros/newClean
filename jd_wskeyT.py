@@ -345,8 +345,9 @@ def serch_ck(pin):
         if pin in envlist[i]['value']:
             value = envlist[i]['value']
             id = envlist[i][ql_id]
+            remark = envlist[i]["remarks"]
             logger.info(str(pin) + "检索成功\n")
-            return True, value, id
+            return True, value, id,remark
         else:
             continue
     logger.info(str(pin) + "检索失败\n")
@@ -505,12 +506,13 @@ if __name__ == '__main__':
     sv, st, uuid, sign = get_sign()
     wslist = get_wskey()
     envlist = get_env()
-    logger.info(wslist)
-    logger.info("===============================================")
-    logger.info(envlist)
-    logger.info("===============================================")
     for ws in wslist:
-        wspin = ws.split(";")[0]
+        ws_list = ws.split(";")
+        if "pin" in ws_list[0]:
+            wspin = ws_list[0]
+        if "pin" in ws_list[1]:
+            wspin = ws_list[1]
+        logger.info(wspin)
         if "pin" in wspin:
             wspin = "pt_" + wspin + ";"  # 封闭变量
             return_serch = serch_ck(wspin)  # 变量 pt_pin 搜索获取 key eid
@@ -523,7 +525,11 @@ if __name__ == '__main__':
                         # logger.info("wskey转pt_key成功", nt_key)
                         logger.info("wskey转换成功")
                         eid = return_serch[2]  # 从 return_serch 拿到 eid
-                        ql_update(eid, nt_key,"")  # 函数 ql_update 参数 eid JD_COOKIE
+                        nt_remark = return_serch[3]
+                        logger.info("===============================================")
+                        logger.info(nt_remark)
+                        logger.info("===============================================")
+                        ql_update(eid, nt_key,nt_remark)  # 函数 ql_update 参数 eid JD_COOKIE
                     else:
                         # logger.info(str(wspin) + "wskey失效\n")
                         eid = return_serch[2]
