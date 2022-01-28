@@ -506,6 +506,8 @@ if __name__ == '__main__':
     envlist = get_env()
     for ws in wslist:
         wspin = ws.split(";")[0]
+        logger.info(ws)
+        logger.info(wspin)
         if "pin" in wspin:
             wspin = ws.split(";")[0]
         else:
