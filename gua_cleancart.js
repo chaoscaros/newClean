@@ -24,7 +24,7 @@ gua_cleancart_SignUrl="" # 算法url
 pin2@&@商品1,商品2👉该pin这几个商品名不清空
 pin5@&@👉该pin全清
 pin3@&@不清空👉该pin不清空
-*@&@不清空👉所有账号不请空
+*@&@不清空👉所有账号不请客
 *@&@👉所有账号清空
 
 优先匹配账号再匹配*
@@ -35,9 +35,9 @@ pin3@&@不清空👉该pin不清空
 防止没指定的账号购物车全清空
 
 */
-let jdSignUrl = 'https://jd.smiek.tk/jdcleancatr_21102717' // 算法url
+let jdSignUrl = '' // 算法url
 let cleancartRun = 'false'
-let cleancartProducts = '*@&@'
+let cleancartProducts = ''
 
 const $ = new Env('清空购物车');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
