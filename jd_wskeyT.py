@@ -523,7 +523,7 @@ if __name__ == '__main__':
             wspin = ws_list[0]
         if "pin" in ws_list[1]:
             wspin = ws_list[1]
-        logger.info(wspin)
+        ws_temp_pin = wspin
         if "pin" in wspin:
             wspin = "pt_" + wspin + ";"  # 封闭变量
             return_serch = serch_ck(wspin)  # 变量 pt_pin 搜索获取 key eid
@@ -557,7 +557,7 @@ if __name__ == '__main__':
                     logger.info("--------------------\n")
             else:
                 logger.info("\n新wskey\n")
-                return_wsremark = serch_ck_remark(wspin)
+                return_wsremark = serch_ck_remark(ws_temp_pin)
                 remarks = ""
                 if return_wsremark[0]:
                     remarks = return_wsremark[1]
