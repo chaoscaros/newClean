@@ -380,12 +380,13 @@ def get_version():
             return 0
 
 
-def ql_update(e_id, n_ck):
+def ql_update(e_id, n_ck,n_remark):
     url = 'http://127.0.0.1:{0}/api/envs'.format(port)
     data = {
         "name": "JD_COOKIE",
         "value": n_ck,
-        ql_id: e_id
+        ql_id: e_id,
+        "remark": n_remark
     }
     data = json.dumps(data)
     res = json.loads(s.put(url=url, data=data).text)
@@ -504,14 +505,12 @@ if __name__ == '__main__':
     sv, st, uuid, sign = get_sign()
     wslist = get_wskey()
     envlist = get_env()
+    logger.info(wslist)
+    logger.info("===============================================")
+    logger.info(envlist)
+    logger.info("===============================================")
     for ws in wslist:
         wspin = ws.split(";")[0]
-        logger.info(ws)
-        logger.info(wspin)
-        if "pin" in wspin:
-            wspin = ws.split(";")[0]
-        else:
-            wspin = ws.split(";")[1]
         if "pin" in wspin:
             wspin = "pt_" + wspin + ";"  # 封闭变量
             return_serch = serch_ck(wspin)  # 变量 pt_pin 搜索获取 key eid
@@ -524,7 +523,7 @@ if __name__ == '__main__':
                         # logger.info("wskey转pt_key成功", nt_key)
                         logger.info("wskey转换成功")
                         eid = return_serch[2]  # 从 return_serch 拿到 eid
-                        ql_update(eid, nt_key)  # 函数 ql_update 参数 eid JD_COOKIE
+                        ql_update(eid, nt_key,"")  # 函数 ql_update 参数 eid JD_COOKIE
                     else:
                         # logger.info(str(wspin) + "wskey失效\n")
                         eid = return_serch[2]
