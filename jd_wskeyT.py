@@ -507,6 +507,10 @@ if __name__ == '__main__':
     for ws in wslist:
         wspin = ws.split(";")[0]
         if "pin" in wspin:
+            wspin = ws.split(";")[0]
+        else:
+            wspin = ws.split(";")[1]
+        if "pin" in wspin:
             wspin = "pt_" + wspin + ";"  # 封闭变量
             return_serch = serch_ck(wspin)  # 变量 pt_pin 搜索获取 key eid
             if return_serch[0]:  # bool: True 搜索到账号
@@ -544,6 +548,7 @@ if __name__ == '__main__':
                     logger.info("wskey转换成功\n")
                     ql_insert(nt_key)
         else:
+
             logger.info("WSKEY格式错误\n--------------------\n")
     logger.info("执行完成\n--------------------")
     sys.exit(0)
