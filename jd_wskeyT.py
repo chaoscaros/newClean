@@ -353,6 +353,17 @@ def serch_ck(pin):
     logger.info(str(pin) + "检索失败\n")
     return False, 1
 
+def serch_ck_remark(pin):
+    for i in range(len(envlist)):
+        if pin in envlist[i]['value']:
+            remark = envlist[i]["remarks"]
+            logger.info(str(pin) + "检索成功\n")
+            return True,remark
+        else:
+            continue
+    logger.info(str(pin) + "检索失败\n")
+    return False, ""
+
 
 def get_env():
     url = 'http://127.0.0.1:{0}/api/envs'.format(port)
@@ -387,7 +398,7 @@ def ql_update(e_id, n_ck,n_remark):
         "name": "JD_COOKIE",
         "value": n_ck,
         ql_id: e_id,
-        "remark": n_remark
+        "remarks": n_remark
     }
     data = json.dumps(data)
     res = json.loads(s.put(url=url, data=data).text)
@@ -418,8 +429,8 @@ def ql_disable(e_id):
         return False
 
 
-def ql_insert(i_ck):
-    data = [{"value": i_ck, "name": "JD_COOKIE"}]
+def ql_insert(i_ck,i_remark):
+    data = [{"value": i_ck, "name": "JD_COOKIE","remarks":i_remark}]
     data = json.dumps(data)
     url = 'http://127.0.0.1:{0}/api/envs'.format(port)
     s.post(url=url, data=data)
@@ -526,9 +537,6 @@ if __name__ == '__main__':
                         logger.info("wskey转换成功")
                         eid = return_serch[2]  # 从 return_serch 拿到 eid
                         nt_remark = return_serch[3]
-                        logger.info("===============================================")
-                        logger.info(nt_remark)
-                        logger.info("===============================================")
                         ql_update(eid, nt_key,nt_remark)  # 函数 ql_update 参数 eid JD_COOKIE
                     else:
                         # logger.info(str(wspin) + "wskey失效\n")
@@ -549,11 +557,15 @@ if __name__ == '__main__':
                     logger.info("--------------------\n")
             else:
                 logger.info("\n新wskey\n")
+                return_wsremark = serch_ck_remark(wspin)
+                remarks = ""
+                if return_wsremark[0]:
+                    remarks = return_wsremark[1]
                 return_ws = getToken(ws)  # 使用 WSKEY 请求获取 JD_COOKIE bool jd_ck
                 if return_ws[0]:
                     nt_key = str(return_ws[1])
                     logger.info("wskey转换成功\n")
-                    ql_insert(nt_key)
+                    ql_insert(nt_key,remarks)
         else:
 
             logger.info("WSKEY格式错误\n--------------------\n")
