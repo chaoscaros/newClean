@@ -148,7 +148,8 @@ async function main() {
           fixPins.push(...run_pins.splice(run_pins.indexOf('jd_gYZtkBfPpRVv'), 1));
           fixPins.push(...run_pins.splice(run_pins.indexOf('jd_41df9b41af810'), 1));
           const randomPins = getRandomArrayElements(run_pins, run_pins.length);
-          run_pins = [[...fixPins, ...randomPins].join(',')];
+          //run_pins = [[...fixPins, ...randomPins].join(',')];
+          run_pins = [...randomPins]
           invite_pins = run_pins;
         }
       }
