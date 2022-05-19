@@ -220,7 +220,7 @@ async function doDailyTask() {
   await clockInIn();//打卡领水
   await executeWaterRains();//水滴雨
   await getExtraAward();//领取额外水滴奖励
-  await turntableFarm()//天天抽奖得好礼
+//   await turntableFarm()//天天抽奖得好礼
 }
 async function predictionFruit() {
   console.log('开始预测水果成熟时间\n');
