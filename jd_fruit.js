@@ -283,6 +283,7 @@ async function doTenWater() {
     isFruitFinished = false;
     for (; waterCount < $.farmTask.totalWaterTaskInit.totalWaterTaskLimit - $.farmTask.totalWaterTaskInit.totalWaterTaskTimes; waterCount++) {
       console.log(`第${waterCount + 1}次浇水`);
+      await $.wait(3000)
       await waterGoodForFarm();
       console.log(`本次浇水结果:   ${JSON.stringify($.waterResult)}`);
       if ($.waterResult.code === '0') {
@@ -411,6 +412,7 @@ async function doTenWaterAgain() {
     //如果现有的水滴，大于水果可兑换所需的对滴(也就是把水滴浇完，水果就能兑换了)
     isFruitFinished = false;
     for (let i = 0; i < ($.farmInfo.farmUserPro.treeTotalEnergy - $.farmInfo.farmUserPro.treeEnergy) / 10; i++) {
+      await $.wait(3000)
       await waterGoodForFarm();
       console.log(`本次浇水结果(水果马上就可兑换了):   ${JSON.stringify($.waterResult)}`);
       if ($.waterResult.code === '0') {
