@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*
+'''
+cron: 0 0 4,13,20 * * * jd_wskeyT.py
+new Env('京喜财富岛兑换100红包');
+'''
+
 import os,re,time,asyncio
 import sys
 sys.path.append(os.path.abspath('../../tmp'))
@@ -20,7 +26,7 @@ export wy_debug_pin="jd_997eefxx29"                # 需要请求的账号coooki
 '''
 
 # 环境变量优先于脚本内部变量,不填的项默认脚本内部变量
-wy_debug_url=f'https://m.jingxi.com/jxbfd/user/ExchangePrize?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1636019052939&ptag=7155.9.47&dwType=3&dwLvl=9&ddwPaperMoney=111000&strPoolName=jxcfd2_exchange_hb_202111&strPgtimestamp=1636019052791&strPhoneID=48cfb189fc66ca09&strPgUUNum=64182db8d7b256398c651fcf2e90510c&_stk=_cfd_t%2CbizCode%2CddwPaperMoney%2CdwEnv%2CdwLvl%2CdwType%2Cptag%2Csource%2CstrPgUUNum%2CstrPgtimestamp%2CstrPhoneID%2CstrPoolName%2CstrZone&_ste=1&h5st=20211104174412939%3B4806829085285162%3B10032%3Btk01w78e51ba630nVD60s8BL94Uv6vkZjMjSOmrJf53ICGsMS%2FbaV33WITJwFxNBuTQ%2BWxqiCvt2IovjIUhdSXWUeG6b%3Bd808e0e13166d0727ee14bf75933a1148f7317e0ea16cb31a9590f99f66d2772&_=1636019052943&sceneval=2&g_login_type=1&callback=jsonpCBKN&g_ty=ls'       # 京喜财富岛111红包api
+wy_debug_url=f'https://m.jingxi.com/jxbfd/user/ExchangePrize?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1636019052939&ptag=7155.9.47&dwType=3&dwLvl=9&ddwPaperMoney=100000&strPoolName=jxcfd2_exchange_hb_202111&strPgtimestamp=1636019052791&strPhoneID=48cfb189fc66ca09&strPgUUNum=64182db8d7b256398c651fcf2e90510c&_stk=_cfd_t%2CbizCode%2CddwPaperMoney%2CdwEnv%2CdwLvl%2CdwType%2Cptag%2Csource%2CstrPgUUNum%2CstrPgtimestamp%2CstrPhoneID%2CstrPoolName%2CstrZone&_ste=1&h5st=20211104174412939%3B4806829085285162%3B10032%3Btk01w78e51ba630nVD60s8BL94Uv6vkZjMjSOmrJf53ICGsMS%2FbaV33WITJwFxNBuTQ%2BWxqiCvt2IovjIUhdSXWUeG6b%3Bd808e0e13166d0727ee14bf75933a1148f7317e0ea16cb31a9590f99f66d2772&_=1636019052943&sceneval=2&g_login_type=1&callback=jsonpCBKN&g_ty=ls'       # 京喜财富岛111红包api
 wy_debug_headers="Host=m.jingxi.com&accept=*/*&x-requested-with=com.jd.pingou&sec-fetch-mode=no-cors&sec-fetch-site=same-site&accept-encoding=gzip, deflate, br&accept-language=zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&referer=https://st.jingxi.com/fortune_island/index2.html?ptag=7155.9.47"         
 wy_debug_manner='get'           
 wy_debug_postdata=''            
