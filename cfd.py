@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*
 '''
-cron: 0 0 4,13,20 * * * jd_wskeyT.py
+cron: 59 59 * * * * new cfd.py
 new Env('京喜财富岛兑换100红包');
 '''
 
