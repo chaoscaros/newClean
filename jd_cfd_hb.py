@@ -11,8 +11,6 @@ import requests
 import random
 import string
 
-from ql_api import get_envs, disable_env, post_envs, put_envs
-
 ql_auth_path = '/ql/config/auth.json'
 # ql_auth_path = r'D:\Docker\ql\config\auth.json'
 ql_url = 'http://localhost:5700'
