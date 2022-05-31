@@ -35,7 +35,7 @@ def get_date() -> str and int:
 
 # 获取要执行兑换的cookie
 def get_cookie():
-    ck_list = [myCookie]
+    ck_list = []
     pin = "null"
     cookie = None
     cookies = get_envs("CFD_COOKIE")
