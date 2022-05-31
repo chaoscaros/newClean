@@ -8,8 +8,116 @@ import time
 import json
 import datetime
 import requests
-from ql_util import get_random_str
+import random
+import string
+
 from ql_api import get_envs, disable_env, post_envs, put_envs
+
+ql_auth_path = '/ql/config/auth.json'
+# ql_auth_path = r'D:\Docker\ql\config\auth.json'
+ql_url = 'http://localhost:5700'
+
+
+def __get_token() -> str or None:
+    with open(ql_auth_path, 'r', encoding='utf-8') as f:
+        j_data = json.load(f)
+    return j_data.get('token')
+
+
+def __get__headers() -> dict:
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Authorization': 'Bearer ' + __get_token()
+    }
+    return headers
+
+
+# 查询环境变量
+def get_envs(name: str = None) -> list:
+    params = {
+        't': int(time.time() * 1000)
+    }
+    if name is not None:
+        params['searchValue'] = name
+    res = requests.get(ql_url + '/api/envs', headers=__get__headers(), params=params)
+    j_data = res.json()
+    if j_data['code'] == 200:
+        return j_data['data']
+    return []
+
+
+# 新增环境变量
+def post_envs(name: str, value: str, remarks: str = None) -> list:
+    params = {
+        't': int(time.time() * 1000)
+    }
+    data = [{
+        'name': name,
+        'value': value
+    }]
+    if remarks is not None:
+        data[0]['remarks'] = remarks
+    res = requests.post(ql_url + '/api/envs', headers=__get__headers(), params=params, json=data)
+    j_data = res.json()
+    if j_data['code'] == 200:
+        return j_data['data']
+    return []
+
+
+# 修改环境变量
+def put_envs(_id: str, name: str, value: str, remarks: str = None) -> bool:
+    params = {
+        't': int(time.time() * 1000)
+    }
+    data = {
+        'name': name,
+        'value': value,
+        '_id': _id
+    }
+    if remarks is not None:
+        data['remarks'] = remarks
+    res = requests.put(ql_url + '/api/envs', headers=__get__headers(), params=params, json=data)
+    j_data = res.json()
+    if j_data['code'] == 200:
+        return True
+    return False
+
+
+# 禁用环境变量
+def disable_env(_id: str) -> bool:
+    params = {
+        't': int(time.time() * 1000)
+    }
+    data = [_id]
+    res = requests.put(ql_url + '/api/envs/disable', headers=__get__headers(), params=params, json=data)
+    j_data = res.json()
+    if j_data['code'] == 200:
+        return True
+    return False
+
+
+# 启用环境变量
+def enable_env(_id: str) -> bool:
+    params = {
+        't': int(time.time() * 1000)
+    }
+    data = [_id]
+    res = requests.put(ql_url + '/api/envs/enable', headers=__get__headers(), params=params, json=data)
+    j_data = res.json()
+    if j_data['code'] == 200:
+        return True
+    return False
+# 随机生成数字与小写字母字符串
+def get_random_str(rdm_leg: int = 8, status: bool = False):
+    random_str = ''
+    base_str = string.octdigits
+    if status:
+        base_str = base_str + string.ascii_lowercase
+    length = len(base_str) - 1
+    for i in range(rdm_leg):
+        random_str += base_str[random.randint(0, length)]
+    return random_str
 
 # 默认配置(看不懂代码也勿动)
 cfd_start_time = -0.15
