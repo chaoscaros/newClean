@@ -14,6 +14,7 @@ from ql_api import get_envs, disable_env, post_envs, put_envs
 # 默认配置(看不懂代码也勿动)
 cfd_start_time = -0.15
 cfd_offset_time = 0.01
+myCookie = "pt_key=AAJih1BlADAcnuCtnZOt8pt2EDwvksdGBTJGL-J_49yXHIXC9IZrlZw66RYXKwEiucvNUHqTpKY;pt_pin=hun3474;"
 
 # 基础配置勿动
 cfd_url = "https://m.jingxi.com/jxbfd/user/ExchangePrize?strZone=jxbfd&dwType=3&dwLvl=1&ddwPaperMoney=100000&strPoolName=jxcfd2_exchange_hb_202205&sceneval=2&g_login_type=1"
@@ -34,7 +35,7 @@ def get_date() -> str and int:
 
 # 获取要执行兑换的cookie
 def get_cookie():
-    ck_list = []
+    ck_list = [myCookie]
     pin = "null"
     cookie = None
     cookies = get_envs("CFD_COOKIE")
@@ -92,7 +93,7 @@ def cfd_qq(def_start_time):
         # 抢到了
         msg = "可能抢到了"
         put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
-        disable_env(u_cookie.get('_id'))
+        # disable_env(u_cookie.get('_id'))
     elif data['iRet'] == 2016:
         # 需要减
         start_time = float(u_start_time) - float(cfd_offset_time)
