@@ -1,10 +1,4 @@
 /*
- * @Author: LXK9301 https://github.com/LXK9301
- * @Date: 2021-8-20
- * @Last Modified by: LXK9301
- * @Last Modified time: 2020-12-26 22:58:02
- */
-/*
 东东工厂，不是京喜工厂
 活动入口：京东APP首页-数码电器-东东工厂
 免费产生的电量(10秒1个电量，500个电量满，5000秒到上限不生产，算起来是84分钟达到上限)
@@ -12,25 +6,21 @@
 开会员任务和去京东首页点击“数码电器任务目前未做
 不会每次运行脚本都投入电力
 只有当心仪的商品存在，并且收集起来的电量满足当前商品所需电力，才投入
-
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #东东工厂
-10 0,6-23 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
-
+10 0,6-23 * * * https://raw.githubusercontent.com/KingRan/KR/main/jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
 ================Loon==============
 [Script]
-cron "10 0,6-23 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js,tag=东东工厂
-
+cron "10 0,6-23 * * *" script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_jdfactory.js,tag=东东工厂
 ===============Surge=================
-东东工厂 = type=cron,cronexp="10 0,6-23 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js
-
+东东工厂 = type=cron,cronexp="10 0,6-23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_jdfactory.js
 ============小火箭=========
-东东工厂 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, cronexpr="10 0,6-23 * * *", timeout=3600, enable=true
+东东工厂 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_jdfactory.js, cronexpr="10 0,6-23 * * *", timeout=3600, enable=true
  */
-const $ = new Env('东东工厂_内部互助');
+const $ = new Env('东东工厂');
 
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -53,7 +43,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [];
 let myInviteCode;
 $.newShareCode = [];
-!(async () => {  
+!(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
@@ -65,7 +55,7 @@ $.newShareCode = [];
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
-      $.stop = false;
+      $.stop = true;
       message = '';
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
@@ -78,17 +68,6 @@ $.newShareCode = [];
         continue
       }
       await jdFactory()
-    }
-  }
-  console.log(`\n开始账号内互助......`);
-  for (let j = 0; j < cookiesArr.length; j++) {
-    if (cookiesArr[j]) {
-      cookie = cookiesArr[j];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = j + 1; 
-	  //console.log(`【京东账号${$.index}】${$.nickName || $.UserName}:\n`);
-	  console.log(`【京东账号${$.index}】:\n`);
-      await helpFriends();
     }
   }
 })()
@@ -261,18 +240,11 @@ async function helpFriends() {
   for (let code of $.newShareCode) {
     if (!code) continue
     const helpRes = await jdfactory_collectScore(code);
-    //console.log(helpRes)
     if (helpRes.code === 0 && helpRes.data.bizCode === -7) {
       console.log(`助力机会已耗尽，跳出`);
       break
     } else if (helpRes.code === 0 && helpRes.data.bizCode === -7001){
       console.log(`对方电力已满，无法助力，跳过`);
-      continue
-    } else if (helpRes.code === 0 && helpRes.data.bizCode === -10){
-      console.log(`助力失败丨您今日已为好友助力过了，快来打造自己的商品吧`);
-      continue
-    } else{
-      console.log(helpRes.data.bizMsg);
       continue
     }
   }
@@ -666,31 +638,6 @@ function jdfactory_getHomeData() {
     })
   })
 }
-function readShareCode() {
-  console.log(`开始`)
-  return new Promise(async resolve => {
-    $.get({url: `https://api.jdsharecode.xyz/api/ddfactory/${randomCount}`, timeout: 10000}, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (data) {
-            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
-            data = JSON.parse(data);
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
-    await $.wait(10000);
-    resolve()
-  })
-}
-
 function taskPostUrl(function_id, body = {}, function_id2) {
   let url = `${JD_API_HOST}`;
   if (function_id2) {
