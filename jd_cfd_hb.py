@@ -189,20 +189,18 @@ def cfd_qq(def_start_time):
     t1 = time.time()
     d1 = datetime.datetime.now().strftime("%H:%M:%S.%f")
     res = requests.get(cfd_url, headers=headers)
-    print(res.text)
     t2 = time.time()
     # 正则对结果进行提取
-    # re_list = pattern_data.search(res.text)
+    re_list = pattern_data.search(res.text)
     # 进行json转换
-    # data = json.loads(re_list.group(1))
-    data = json.loads(res.text)
+    data = json.loads(re_list.group(1))
     msg = data['sErrMsg']
     # 根据返回值判断
     if data['iRet'] == 0:
         # 抢到了
         msg = "可能抢到了"
-        # put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
-        # disable_env(u_cookie.get('_id'))
+        put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
+        disable_env(u_cookie.get('_id'))
     elif data['iRet'] == 2016:
         # 需要减
         start_time = float(u_start_time) - float(cfd_offset_time)
