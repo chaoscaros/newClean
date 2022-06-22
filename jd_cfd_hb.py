@@ -167,6 +167,7 @@ def get_config():
     start_dist = {}
     start_times = get_envs("CFD_START_TIME")
     offset_time = get_envs("CFD_OFFSET_TIME")
+    u_cfd_url = get_envs("CFD_URL")
     if len(start_times) >= 1:
         start_dist = start_times[0]
         start_time = float(start_dist.get('value'))
@@ -180,13 +181,23 @@ def get_config():
     if len(offset_time) >= 1:
         offset_dist = offset_time[0]
         offset_time = float(offset_dist.get('value'))
-        print('从环境变量中载入时间变量[{}]'.format(offset_time))
+        print('从环境变量中载入时间偏移变量[{}]'.format(offset_time))
     else:
         offset_time = cfd_offset_time
-        u_data = post_envs('CFD_OFFSET_TIME', str(offset_time), '财富岛兑换时间配置,自动生成,勿动')
+        u_data = post_envs('CFD_OFFSET_TIME', str(offset_time), '财富岛兑换时间偏移配置,自动生成,不懂勿动')
         if len(u_data) == 1:
             offset_dist = u_data[0]
-        print('从默认配置中载入时间变量[{}]'.format(offset_time))
+        print('从默认配置中载入时间偏移变量[{}]'.format(offset_time))
+    if len(u_cfd_url) >= 1:
+        cfd_url_dist = u_cfd_url[0]
+        u_cfd_url = float(cfd_url_dist.get('value'))
+        print('从环境变量中载入URL[]')
+    else:
+        u_cfd_url = cfd_url
+        u_data = post_envs('CFD_URL', str(u_cfd_url), '财富岛兑换URL配置')
+        if len(u_data) == 1:
+            cfd_url_dist = u_data[0]
+        print('从默认配置中载入URL[]')
     return start_time, start_dist,offset_time,offset_dist
 
 
@@ -239,6 +250,7 @@ if __name__ == '__main__':
     print("脚本进入时间[{}]".format(datetime.datetime.now().strftime("%H:%M:%S.%f")))
     # 从环境变量获取url,不存在则从配置获取
     u_url = os.getenv("CFD_URL", cfd_url)
+    print("从环境变量中载入URL[{}]".format(u_url))
     # 获取cookie等参数
     u_pin, u_cookie = get_cookie()
     # 获取时间等参数
