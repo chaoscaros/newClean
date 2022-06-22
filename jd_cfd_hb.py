@@ -119,7 +119,7 @@ def get_random_str(rdm_leg: int = 8, status: bool = False):
 
 # 默认配置(看不懂代码也勿动)
 cfd_start_time = -0.15
-cfd_offset_time = 0.01
+cfd_offset_time = 0.005
 myCookie = ""
 
 # 基础配置勿动
