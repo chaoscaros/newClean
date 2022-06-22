@@ -214,11 +214,11 @@ def cfd_qq(def_start_time):
         disable_env(u_cookie.get('_id'))
     elif data['iRet'] == 2016:
         # 需要减
-        start_time = float(u_start_time) - float(cfd_offset_time)
+        start_time = float(u_start_time) - float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
     elif data['iRet'] == 2013:
         # 需要加
-        start_time = float(u_start_time) + float(cfd_offset_time)
+        start_time = float(u_start_time) + float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
     elif data['iRet'] == 1014:
         # URL过期
@@ -231,7 +231,7 @@ def cfd_qq(def_start_time):
         # 账号过期
         put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
         disable_env(u_cookie.get('_id'))
-    print("实际发送[{}]\n耗时[{:.3f}]\n用户[{}]\n结果[{}]\n[{}]".format(d1, (t2 - t1), u_pin, msg,u_offset_time))
+    print("实际发送[{}]\n耗时[{:.3f}]\n用户[{}]\n结果[{}]\n".format(d1, (t2 - t1), u_pin, msg))
 
 
 if __name__ == '__main__':
