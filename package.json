@@ -16,7 +16,9 @@
   "author": "LXK9301",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "crypto-js": "^4.0.0",
+    "date-fns": "^2.28.0",
     "download": "^6.2.5",
     "got": "^11.5.1",
     "http-server": "^0.12.3",
@@ -25,6 +27,7 @@
     "qrcode-terminal": "^0.12.0",
     "request": "^2.88.2",
     "tough-cookie": "^4.0.0",
+    "ts-md5": "^1.2.11",
     "tunnel": "0.0.6",
     "ws": "^7.4.3"
   }
