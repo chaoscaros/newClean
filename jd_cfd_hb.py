@@ -166,6 +166,7 @@ def get_cookie():
 def get_config():
     start_dist = {}
     start_times = get_envs("CFD_START_TIME")
+    offset_time = get_envs("CFD_OFFSET_TIME")
     if len(start_times) >= 1:
         start_dist = start_times[0]
         start_time = float(start_dist.get('value'))
@@ -176,7 +177,17 @@ def get_config():
         if len(u_data) == 1:
             start_dist = u_data[0]
         print('从默认配置中载入时间变量[{}]'.format(start_time))
-    return start_time, start_dist
+    if len(offset_time) >= 1:
+        offset_dist = offset_time[0]
+        offset_time = float(offset_dist.get('value'))
+        print('从环境变量中载入时间变量[{}]'.format(offset_time))
+    else:
+        offset_time = cfd_offset_time
+        u_data = post_envs('CFD_OFFSET_TIME', str(offset_time), '财富岛兑换时间配置,自动生成,勿动')
+        if len(u_data) == 1:
+            offset_dist = u_data[0]
+        print('从默认配置中载入时间变量[{}]'.format(offset_time))
+    return start_time, start_dist,offset_time,offset_dist
 
 
 # 抢购红包请求函数
@@ -220,7 +231,7 @@ def cfd_qq(def_start_time):
         # 账号过期
         put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
         disable_env(u_cookie.get('_id'))
-    print("实际发送[{}]\n耗时[{:.3f}]\n用户[{}]\n结果[{}]".format(d1, (t2 - t1), u_pin, msg))
+    print("实际发送[{}]\n耗时[{:.3f}]\n用户[{}]\n结果[{}]\n[{}]".format(d1, (t2 - t1), u_pin, msg,u_offset_time))
 
 
 if __name__ == '__main__':
@@ -231,7 +242,7 @@ if __name__ == '__main__':
     # 获取cookie等参数
     u_pin, u_cookie = get_cookie()
     # 获取时间等参数
-    u_start_time, u_start_dist = get_config()
+    u_start_time, u_start_dist,u_offset_time,u_offset_dist = get_config()
     # 预计下个整点为
     u_integer_time, u_time_stamp = get_date()
     print("抢购整点[{}]".format(u_integer_time))
