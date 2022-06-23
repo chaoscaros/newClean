@@ -212,7 +212,9 @@ def set_arr_config(tempArr_times,tempArr_status):
         startArr_time = float(startArr_dist.get('value'))
     else:
         startArr_time = float(0)
-        post_envs('CFD_ARR_START_TIME', str(startArr_time), '财富岛兑换起始时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置大于或者等于这个数值时，会提示奖品正在补货中，请稍后再试,要抢到红包请小于这个时间')
+        u_data = post_envs('CFD_ARR_START_TIME', str(startArr_time), '财富岛兑换起始时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置大于或者等于这个数值时，会提示奖品正在补货中，请稍后再试,要抢到红包请小于这个时间')
+        if len(u_data) == 1:
+            startArr_dist = u_data[0]
         print('初始化财富岛兑换起始时间范围变量[{}]'.format(startArr_time))
     
     if len(endArr_times) >= 1:
@@ -221,7 +223,9 @@ def set_arr_config(tempArr_times,tempArr_status):
         print('从环境变量中载入时间偏移变量[{}]'.format(endArr_time))
     else:
         endArr_time = float(0)
-        post_envs('CFD_ARR_END_TIME', str(endArr_time), '财富岛兑换结束时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置小于或者等于这个数值时，会提示奖品已经发完啦，下次早点来,要抢到红包请大于这个时间')
+        u_data = post_envs('CFD_ARR_END_TIME', str(endArr_time), '财富岛兑换结束时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置小于或者等于这个数值时，会提示奖品已经发完啦，下次早点来,要抢到红包请大于这个时间')
+        if len(u_data) == 1:
+            endArr_dist = u_data[0]
         print('初始化财富岛兑换结束时间范围变量[{}]'.format(endArr_time))
     
     if tempArr_status == 2016 :
@@ -265,12 +269,12 @@ def cfd_qq(def_start_time):
         # 需要减
         start_time = float(u_start_time) - float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
-        set_arr_config(start_time,data['iRet'])
+        set_arr_config(float(u_start_time),data['iRet'])
     elif data['iRet'] == 2013:
         # 需要加
         start_time = float(u_start_time) + float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
-        set_arr_config(start_time,data['iRet'])
+        set_arr_config(float(u_start_time),data['iRet'])
     elif data['iRet'] == 1014:
         # URL过期
         pass
