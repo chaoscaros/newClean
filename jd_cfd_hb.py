@@ -228,7 +228,7 @@ def set_arr_config(tempArr_times,tempArr_status,tempArr_msg):
             endArr_dist = u_data[0]
         print('初始化财富岛兑换结束时间范围变量[{}]'.format(endArr_time))
     
-    print("状态码[{}]\n提示消息[{:.3f}]\n".format(tempArr_status,tempArr_msg))
+    print("状态码[{}]\n提示消息[{}]\n".format(tempArr_status,tempArr_msg))
     if tempArr_status == 2016 or "补货" in tempArr_msg :
         if startArr_time > tempArr_times :
             put_envs(startArr_dist.get('_id'), startArr_dist.get('name'), str(tempArr_times)[:8])
@@ -255,9 +255,9 @@ def cfd_qq(def_start_time):
     else:
         res = requests.get(cfd_url, headers=headers)
     t2 = time.time()
-    print("返回的数据[{}]\n".format(res))
     # 正则对结果进行提取
     re_list = pattern_data.search(res.text)
+    print("返回的数据[{}]\n".format(re_list))
     # 进行json转换
     data = json.loads(re_list.group(1))
     msg = data['sErrMsg']
