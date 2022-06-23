@@ -222,7 +222,7 @@ def set_arr_config(tempArr_times,tempArr_status):
         endArr_time = float(endArr_dist.get('value'))
         print('从环境变量中载入时间偏移变量[{}]'.format(endArr_time))
     else:
-        endArr_time = float(0)
+        endArr_time = float(-100)
         u_data = post_envs('CFD_ARR_END_TIME', str(endArr_time), '财富岛兑换结束时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置小于或者等于这个数值时，会提示奖品已经发完啦，下次早点来,要抢到红包请大于这个时间')
         if len(u_data) == 1:
             endArr_dist = u_data[0]
@@ -231,11 +231,11 @@ def set_arr_config(tempArr_times,tempArr_status):
     if tempArr_status == 2016 :
         if startArr_time > tempArr_times :
             put_envs(startArr_dist.get('_id'), startArr_dist.get('name'), str(tempArr_times)[:8])
-        print('更新财富岛兑换起始时间范围变量[{}]'.format(str(tempArr_times)[:8]))
+            print('更新财富岛兑换起始时间范围变量[{}]'.format(str(tempArr_times)[:8]))
     elif tempArr_status == 2013 :
         if endArr_time < tempArr_times :
             put_envs(endArr_dist.get('_id'), endArr_dist.get('name'), str(tempArr_times)[:8])
-        print('更新财富岛兑换结束时间范围变量[{}]'.format(str(tempArr_times)[:8]))
+            print('更新财富岛兑换结束时间范围变量[{}]'.format(str(tempArr_times)[:8]))
     
     
 
