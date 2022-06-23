@@ -191,13 +191,13 @@ def get_config():
     if len(u_cfd_url) >= 1:
         cfd_url_dist = u_cfd_url[0]
         u_cfd_url = cfd_url_dist.get('value')
-        print("从环境变量中载入URL[{}]".format(u_cfd_url))
+        print("从环境变量中载入URL")
     else:
         u_cfd_url = cfd_url
         u_data = post_envs('CFD_URL', str(u_cfd_url), '财富岛兑换URL配置')
         if len(u_data) == 1:
             cfd_url_dist = u_data[0]
-        print("从环境变量中载入URL[{}]".format(u_cfd_url))
+        print("从环境变量中载入URL")
     return start_time, start_dist,offset_time,offset_dist
 
 
@@ -210,7 +210,6 @@ def cfd_qq(def_start_time):
     # 记录请求时间,发送请求
     t1 = time.time()
     d1 = datetime.datetime.now().strftime("%H:%M:%S.%f")
-    print("判断[{}]".format(("https://m.jingxi.com/jxbfd/user/ExchangePrize?" in u_url)))
     if("https://m.jingxi.com/jxbfd/user/ExchangePrize?" in u_url):
         res = requests.get(u_url, headers=headers)
     else:
