@@ -265,12 +265,12 @@ def cfd_qq(def_start_time):
         # 需要减
         start_time = float(u_start_time) - float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
-        set_arr_config(str(start_time)[:8],data['iRet'])
+        set_arr_config(start_time,data['iRet'])
     elif data['iRet'] == 2013:
         # 需要加
         start_time = float(u_start_time) + float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
-        set_arr_config(str(start_time)[:8],data['iRet'])
+        set_arr_config(start_time,data['iRet'])
     elif data['iRet'] == 1014:
         # URL过期
         pass
