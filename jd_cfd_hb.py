@@ -190,14 +190,14 @@ def get_config():
         print('从默认配置中载入时间偏移变量[{}]'.format(offset_time))
     if len(u_cfd_url) >= 1:
         cfd_url_dist = u_cfd_url[0]
-        u_cfd_url = float(cfd_url_dist.get('value'))
-        print('从环境变量中载入URL[]')
+        u_cfd_url = cfd_url_dist.get('value')
+        print("从环境变量中载入URL[{}]".format(u_cfd_url))
     else:
         u_cfd_url = cfd_url
         u_data = post_envs('CFD_URL', str(u_cfd_url), '财富岛兑换URL配置')
         if len(u_data) == 1:
             cfd_url_dist = u_data[0]
-        print('从默认配置中载入URL[]')
+        print("从环境变量中载入URL[{}]".format(u_cfd_url))
     return start_time, start_dist,offset_time,offset_dist
 
 
@@ -210,7 +210,11 @@ def cfd_qq(def_start_time):
     # 记录请求时间,发送请求
     t1 = time.time()
     d1 = datetime.datetime.now().strftime("%H:%M:%S.%f")
-    res = requests.get(cfd_url, headers=headers)
+    print("判断[{}]".format(("https://m.jingxi.com/jxbfd/user/ExchangePrize?" in u_url)))
+    if("https://m.jingxi.com/jxbfd/user/ExchangePrize?" in u_url):
+        res = requests.get(u_url, headers=headers)
+    else:
+        res = requests.get(cfd_url, headers=headers)
     t2 = time.time()
     # 正则对结果进行提取
     re_list = pattern_data.search(res.text)
@@ -248,13 +252,12 @@ def cfd_qq(def_start_time):
 if __name__ == '__main__':
     print("- 程序初始化")
     print("脚本进入时间[{}]".format(datetime.datetime.now().strftime("%H:%M:%S.%f")))
-    # 从环境变量获取url,不存在则从配置获取
-    u_url = os.getenv("CFD_URL", cfd_url)
-    print("从环境变量中载入URL[{}]".format(u_url))
     # 获取cookie等参数
     u_pin, u_cookie = get_cookie()
     # 获取时间等参数
     u_start_time, u_start_dist,u_offset_time,u_offset_dist = get_config()
+    # 从环境变量获取url,不存在则从配置获取
+    u_url = os.getenv("CFD_URL", cfd_url)
     # 预计下个整点为
     u_integer_time, u_time_stamp = get_date()
     print("抢购整点[{}]".format(u_integer_time))
