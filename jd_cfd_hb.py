@@ -255,6 +255,7 @@ def cfd_qq(def_start_time):
     else:
         res = requests.get(cfd_url, headers=headers)
     t2 = time.time()
+    print("返回的数据[{}]\n".format(res))
     # 正则对结果进行提取
     re_list = pattern_data.search(res.text)
     # 进行json转换
