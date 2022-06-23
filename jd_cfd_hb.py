@@ -165,9 +165,10 @@ def get_cookie():
 # 获取配置参数
 def get_config():
     start_dist = {}
+    offset_dist = {}
     start_times = get_envs("CFD_START_TIME")
-    offset_time = get_envs("CFD_OFFSET_TIME")
-    u_cfd_url = get_envs("CFD_URL")
+    offset_times = get_envs("CFD_OFFSET_TIME")
+    u_cfd_urls = get_envs("CFD_URL")
     if len(start_times) >= 1:
         start_dist = start_times[0]
         start_time = float(start_dist.get('value'))
@@ -178,8 +179,8 @@ def get_config():
         if len(u_data) == 1:
             start_dist = u_data[0]
         print('从默认配置中载入时间变量[{}]'.format(start_time))
-    if len(offset_time) >= 1:
-        offset_dist = offset_time[0]
+    if len(offset_times) >= 1:
+        offset_dist = offset_times[0]
         offset_time = float(offset_dist.get('value'))
         print('从环境变量中载入时间偏移变量[{}]'.format(offset_time))
     else:
@@ -188,8 +189,8 @@ def get_config():
         if len(u_data) == 1:
             offset_dist = u_data[0]
         print('从默认配置中载入时间偏移变量[{}]'.format(offset_time))
-    if len(u_cfd_url) >= 1:
-        cfd_url_dist = u_cfd_url[0]
+    if len(u_cfd_urls) >= 1:
+        cfd_url_dist = u_cfd_urls[0]
         u_cfd_url = cfd_url_dist.get('value')
         print("从环境变量中载入URL")
     else:
@@ -199,6 +200,40 @@ def get_config():
             cfd_url_dist = u_data[0]
         print("从环境变量中载入URL")
     return start_time, start_dist,offset_time,offset_dist
+
+# 时间区间范围
+def set_arr_config(tempArr_times,tempArr_status):
+    startArr_dist = {}
+    endArr_dist = {}
+    startArr_times = get_envs("CFD_ARR_START_TIME")
+    endArr_times = get_envs("CFD_ARR_END_TIME")
+    if len(startArr_times) >= 1:
+        startArr_dist = startArr_times[0]
+        startArr_time = float(startArr_dist.get('value'))
+    else:
+        startArr_time = 0
+        post_envs('CFD_ARR_START_TIME', str(startArr_time), '财富岛兑换起始时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置大于或者等于这个数值时，会提示奖品正在补货中，请稍后再试,要抢到红包请小于这个时间')
+        print('初始化财富岛兑换起始时间范围变量[{}]'.format(startArr_time))
+    
+    if len(endArr_times) >= 1:
+        endArr_dist = endArr_times[0]
+        endArr_time = float(endArr_dist.get('value'))
+        print('从环境变量中载入时间偏移变量[{}]'.format(endArr_time))
+    else:
+        endArr_time = 0
+        post_envs('CFD_ARR_END_TIME', str(endArr_time), '财富岛兑换结束时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置小于或者等于这个数值时，会提示奖品已经发完啦，下次早点来,要抢到红包请大于这个时间')
+        print('初始化财富岛兑换结束时间范围变量[{}]'.format(endArr_time))
+    
+    if tempArr_status == 2016 :
+        if startArr_time > tempArr_times :
+            put_envs(startArr_dist.get('_id'), startArr_dist.get('name'), str(tempArr_times)[:8])
+        print('更新财富岛兑换起始时间范围变量[{}]'.format(str(tempArr_times)[:8]))
+    elif tempArr_status == 2013 :
+        if endArr_times < tempArr_times :
+            put_envs(endArr_dist.get('_id'), endArr_dist.get('name'), str(tempArr_times)[:8])
+        print('更新财富岛兑换结束时间范围变量[{}]'.format(str(tempArr_times)[:8]))
+    
+    
 
 
 # 抢购红包请求函数
@@ -210,7 +245,7 @@ def cfd_qq(def_start_time):
     # 记录请求时间,发送请求
     t1 = time.time()
     d1 = datetime.datetime.now().strftime("%H:%M:%S.%f")
-    if("https://m.jingxi.com/jxbfd/user/ExchangePrize?" in u_url):
+    if ("https://m.jingxi.com/jxbfd/user/ExchangePrize?" in u_url) :
         res = requests.get(u_url, headers=headers)
     else:
         res = requests.get(cfd_url, headers=headers)
@@ -230,10 +265,12 @@ def cfd_qq(def_start_time):
         # 需要减
         start_time = float(u_start_time) - float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
+        set_arr_config(str(start_time)[:8],data['iRet'])
     elif data['iRet'] == 2013:
         # 需要加
         start_time = float(u_start_time) + float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
+        set_arr_config(str(start_time)[:8],data['iRet'])
     elif data['iRet'] == 1014:
         # URL过期
         pass
