@@ -230,11 +230,11 @@ def set_arr_config(tempArr_times,tempArr_status,tempArr_msg):
     
     print("状态码[{}]\n提示消息[{}]\n".format(tempArr_status,tempArr_msg))
     if tempArr_status == 2016 or "补货" in tempArr_msg :
-        if startArr_time > tempArr_times :
+        if startArr_time != tempArr_times :
             put_envs(startArr_dist.get('_id'), startArr_dist.get('name'), str(tempArr_times)[:8])
             print('更新财富岛兑换起始时间范围变量[{}]'.format(str(tempArr_times)[:8]))
     elif tempArr_status == 2013  or "发完" in tempArr_msg :
-        if endArr_time < tempArr_times :
+        if endArr_time != tempArr_times :
             put_envs(endArr_dist.get('_id'), endArr_dist.get('name'), str(tempArr_times)[:8])
             print('更新财富岛兑换结束时间范围变量[{}]'.format(str(tempArr_times)[:8]))
     
