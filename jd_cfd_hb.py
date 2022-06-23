@@ -257,9 +257,9 @@ def cfd_qq(def_start_time):
     t2 = time.time()
     # 正则对结果进行提取
     re_list = pattern_data.search(res.text)
-    print("返回的数据[{}]\n".format(re_list))
     # 进行json转换
     data = json.loads(re_list.group(1))
+    print("返回的数据[{}]\n".format(data))
     msg = data['sErrMsg']
     # 根据返回值判断
     if data['iRet'] == 0:
