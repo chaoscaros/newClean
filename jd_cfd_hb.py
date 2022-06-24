@@ -268,6 +268,7 @@ def cfd_qq(def_start_time):
         put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
         disable_env(u_cookie.get('_id'))
     elif data['iRet'] == 2016 or "补货" in msg :
+        cfd_qq(1)
         # 需要减
         start_time = float(u_start_time) - float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
