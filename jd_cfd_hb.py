@@ -229,11 +229,11 @@ def set_arr_config(tempArr_times,tempArr_status,tempArr_msg):
         print('初始化财富岛兑换结束时间范围变量[{}]'.format(endArr_time))
     
     print("状态码[{}]\n提示消息[{}]\n".format(tempArr_status,tempArr_msg))
-    if tempArr_status == 2016 or "补货" in tempArr_msg :
+    if "补货" in tempArr_msg :
         if startArr_time != tempArr_times :
             put_envs(startArr_dist.get('_id'), startArr_dist.get('name'), str(tempArr_times)[:8])
             print('更新财富岛兑换起始时间范围变量[{}]'.format(str(tempArr_times)[:8]))
-    elif tempArr_status == 2013  or "发完" in tempArr_msg :
+    elif "发完" in tempArr_msg :
         if endArr_time != tempArr_times :
             put_envs(endArr_dist.get('_id'), endArr_dist.get('name'), str(tempArr_times)[:8])
             print('更新财富岛兑换结束时间范围变量[{}]'.format(str(tempArr_times)[:8]))
@@ -267,13 +267,15 @@ def cfd_qq(def_start_time):
         msg = "可能抢到了"
         put_envs(u_cookie.get('_id'), u_cookie.get('name'), u_cookie.get('value'), msg)
         disable_env(u_cookie.get('_id'))
-    elif data['iRet'] == 2016 or "补货" in msg :
+    # elif data['iRet'] == 2016 or "发完" in msg :
+    elif "发完" in msg :
         cfd_qq(1)
         # 需要减
         start_time = float(u_start_time) - float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
         set_arr_config(float(u_start_time),data['iRet'],msg)
-    elif data['iRet'] == 2013 or "发完" in msg :
+    # elif data['iRet'] == 2013 or "补货" in msg :
+    elif "补货" in msg :
         # 需要加
         start_time = float(u_start_time) + float(u_offset_time)
         put_envs(u_start_dist.get('_id'), u_start_dist.get('name'), str(start_time)[:8])
