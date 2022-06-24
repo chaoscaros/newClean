@@ -220,7 +220,6 @@ def set_arr_config(tempArr_times,tempArr_status,tempArr_msg):
     if len(endArr_times) >= 1:
         endArr_dist = endArr_times[0]
         endArr_time = float(endArr_dist.get('value'))
-        print('从环境变量中载入时间偏移变量[{}]'.format(endArr_time))
     else:
         endArr_time = float(-100)
         u_data = post_envs('CFD_ARR_END_TIME', str(endArr_time), '财富岛兑换结束时间范围，注意数值为负数,自动生成,勿动,财富岛兑换时间配置小于或者等于这个数值时，会提示奖品已经发完啦，下次早点来,要抢到红包请大于这个时间')
